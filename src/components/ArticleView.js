@@ -1,25 +1,28 @@
-import CardHeader from "@material-ui/core/CardHeader";
-import Avatar from "@material-ui/core/Avatar";
 import React from "react";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import IconButton from "@material-ui/core/IconButton";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
+import CardHeader from "@mui/material/CardHeader";
+import Avatar from "@mui/material/Avatar";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import IconButton from '@mui/material/IconButton';
+import MenuItem from '@mui/material/MenuItem';
+import Menu from '@mui/material/Menu';
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 
 const App = () => {
   const [isliked, setIsLiked] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [isEditing, setIsEditing] = React.useState(false);
 
   const MyOptions = ["Edit", "Delete"];
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleLike = (event) => {
     setIsLiked(!isliked);
   };
+
   const open = Boolean(anchorEl);
 
   const handleClose = () => {

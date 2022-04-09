@@ -10,7 +10,7 @@ export default function Feed() {
 
   return (
     <div>
-      <Header />
+      {/* <Header /> */}
       {elements}
     </div>
   );
