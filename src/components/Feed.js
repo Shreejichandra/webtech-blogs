@@ -1,9 +1,17 @@
-function Feed() {
-    return (
-        <div className="feed">
-            Hello from Feed
-        </div>
-    )
-}
+import React from "react";
+import Header from "./Header";
+import dummyData from "./dummy.json";
+import FeedCard from "./FeedCard";
 
-export default Feed;
+export default function Feed() {
+  const elements = dummyData.map((feed) => {
+    return <FeedCard title={feed.title} text={feed.text} />;
+  });
+
+  return (
+    <div>
+      <Header />
+      {elements}
+    </div>
+  );
+}

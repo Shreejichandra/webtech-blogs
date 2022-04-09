@@ -1,7 +1,8 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Feed from './components/Feed'
-import Profile from './components/Profile'
+import Feed from "./components/Feed";
+import Profile from "./components/Profile";
+import ArticleView from "./components/ArticleView";
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Feed />} />
           <Route exact path="/profile" element={<Profile />} />
+          <Route exact path="/article" element={<ArticleView />} />
         </Routes>
       </BrowserRouter>
     </div>
