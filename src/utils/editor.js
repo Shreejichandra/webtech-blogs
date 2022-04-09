@@ -60,6 +60,8 @@ const createEditor = (editorClass, placeholder, setter, elements) => {
 
     if (elements)
         editor.addElements(elements)
+    
+    return editor;
 }
 
 export default createEditor;

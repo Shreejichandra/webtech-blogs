@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import CardHeader from "@mui/material/CardHeader";
 import Avatar from "@mui/material/Avatar";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -7,11 +7,18 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import DoneIcon from '@mui/icons-material/Done';
+
+import createEditor from '../utils/editor'
 
 const App = () => {
-  const [isliked, setIsLiked] = React.useState(false);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [isEditing, setIsEditing] = React.useState(false);
+  const [isliked, setIsLiked] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [bodyEditor, setBodyEditor] = useState(null);
+  const [titleEditor, setTitleEditor] = useState(null);
+  const [title, setTitle] = useState("ArticleTitle");
+  const [body, setBody] = useState("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a lorem orci. Aenean efficitur quam vel dui maximus hendrerit. Pellentesque vitae nunc lacinia, semper eros non, varius ex. Suspendisse vel augue in lacus malesuada sagittis. Nulla tristique nec libero ac dignissim. Nam eget leo quis enim pellentesque interdum. Quisque porttitor nisl tellus, ac bibendum nunc rhoncus sed.");
 
   const MyOptions = ["Edit", "Delete"];
 
@@ -29,11 +36,50 @@ const App = () => {
     setAnchorEl(null);
   };
 
+  const handleDoneEditing = () => {
+    setIsEditing(false);
+    titleEditor.destroy();
+    bodyEditor.destroy();
+  }
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+    setAnchorEl(null);
+    setTitleEditor(createEditor('.article-title', 'Edit me', setTitle, '.article-title'))
+    setBodyEditor(createEditor('.article-body', 'Edit me', setBody, '.article-body'))
+  }
+
+  const handleDeleteClick = () => {
+    console.log("Delete");
+    setAnchorEl(null);
+  }
+
+  const menuOptions = [
+    {
+      name: "Edit",
+      onClick: handleEditClick
+    },
+    {
+      name: "Delete",
+      onClick: handleDeleteClick
+    }
+  ]
+
   return (
     <div>
       <CardHeader
         action={
           <div>
+            { isEditing &&
+              <IconButton
+                aria-label="more"
+                aria-haspopup="true"
+                aria-controls="long-menu"
+              >
+                <DoneIcon onClick={handleDoneEditing} />
+              </IconButton>
+            }
+
             <IconButton
               aria-label="more"
               onClick={handleLike}
@@ -62,9 +108,9 @@ const App = () => {
               onClose={handleClose}
               open={open}
             >
-              {MyOptions.map((option) => (
-                <MenuItem key={option} onClick={handleClose}>
-                  {option}
+              {menuOptions.map((option) => (
+                <MenuItem key={option.name} onClick={option.onClick}>
+                  {option.name}
                 </MenuItem>
               ))}
             </Menu>
@@ -74,15 +120,11 @@ const App = () => {
         title="Shrimp and Chorizo Paella"
         subheader="September 14, 2016"
       />
-      <h2>Article Title</h2>
+      <h2 className="article-title">Article Title</h2>
       <img src="./logo192.png" alt="blog_image" />
 
-      <p>
-        Entrypoint main 2.47 MiB (2.29 MiB) = static/js/bundle.js 2.46 MiB
-        main.1a7c99f6f2704742a4a2.hot-update.js 3.47 KiB 2 auxiliary assets
-        cached modules 2.58 MiB [cached] 674 modules runtime modules 32.7 KiB 16
-        modules ./src/components/ArticleView.js 1.93 KiB [built] [code
-        generated] webpack 5.72.0 compiled successfully in 240 ms
+      <p className="article-body">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a lorem orci. Aenean efficitur quam vel dui maximus hendrerit. Pellentesque vitae nunc lacinia, semper eros non, varius ex. Suspendisse vel augue in lacus malesuada sagittis. Nulla tristique nec libero ac dignissim. Nam eget leo quis enim pellentesque interdum. Quisque porttitor nisl tellus, ac bibendum nunc rhoncus sed.
       </p>
     </div>
   );
