@@ -21,13 +21,13 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
+    <div className="app">
       <Header
         showSignIn={showSignIn}
         setShowSignIn={setShowSignIn}
         isLoggedIn={isLoggedIn}
         setIsLoggedIn={setIsLoggedIn}
-      />
+      />{" "}
       <SignInUp
         showSignIn={showSignIn}
         setShowSignIn={setShowSignIn}
