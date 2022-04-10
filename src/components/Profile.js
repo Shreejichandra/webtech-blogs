@@ -8,8 +8,10 @@ import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
+import { useNavigate } from "react-router-dom";
+import { BrowserRouter } from 'react-router-dom';
 
-function Profile({setIsLoggedIn}) {
+function Profile({ setIsLoggedIn }) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -29,6 +31,14 @@ function Profile({setIsLoggedIn}) {
     setAnchorElUser(null);
   };
 
+
+
+  const navigate = useNavigate();
+  const ArticlesPage = () => {
+    navigate("/userarticles");
+    handleCloseUserMenu();
+  }
+
   const logout = () => {
     localStorage.removeItem("token");
     setIsLoggedIn(false);
@@ -38,7 +48,7 @@ function Profile({setIsLoggedIn}) {
   const settings = [
     {
       name: "Profile",
-      onClick: handleCloseUserMenu
+      onClick: ArticlesPage
     },
     {
       name: "Logout",
