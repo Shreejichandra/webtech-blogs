@@ -10,10 +10,11 @@ import Creator from './components/Creator'
 
 function App() {
   const [showSignIn, setShowSignIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
     <div className="App">
-      <Header showSignIn={showSignIn} setShowSignIn={setShowSignIn} />
+      <Header showSignIn={showSignIn} setShowSignIn={setShowSignIn} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
       <SignInUp showSignIn={showSignIn} setShowSignIn={setShowSignIn} />
       <BrowserRouter>
         <Routes>
