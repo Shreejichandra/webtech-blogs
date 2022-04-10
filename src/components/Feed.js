@@ -9,7 +9,7 @@ export default function Feed() {
   });
 
   return (
-    <div>
+    <div className="feed">
       {/* <Header /> */}
       {elements}
     </div>

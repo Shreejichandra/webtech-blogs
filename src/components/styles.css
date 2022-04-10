@@ -1,3 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sansita+Swashed&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cabin&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Beau+Rivage&display=swap');
+.app {
+    /* background-color: #121212; */
+    background-image: url(bg-image2.jpg);
+    background-repeat: repeat;
+}
+
+.icon {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+    margin-left: 0px;
+}
+
+.title-name {
+    /* font-family: 'Beau Rivage', cursive; */
+    font-family: 'Dancing Script', cursive;
+    font-size: 24px;
+    letter-spacing: 2px;
+    font-weight: bold;
+}
+
+
+/* .appbar {
+    background: #383838;
+} */
+
+
+/* 
+.MuiPaper-root-MuiAppBar-root {
+    background: #383838;
+} */
+
+.feed {
+    align-items: center;
+    margin: 0% 20%;
+    padding: 2%;
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 0% 3%;
+    /* text-align: center; */
+    align-items: center;
+    justify-content: center;
+    /* background-color: #2196F3;
+  padding: 10px; */
+}
+
+.feedcard {
+    padding-bottom: 1%;
+    width: 500px;
+    height: 500px;
+    /* align-items: center;
+    justify-content: center; */
+}
+
+.feedcard h2 {
+    background: linear-gradient( to right, rgb(190, 61, 255), rgb(255, 46, 227));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+    font-size: 5vmin;
+    line-height: 1;
+    margin: 12px;
+}
+
+.card-header {
+    color: #BB86FC;
+}
+
+.MuiCardContent-root {
+    padding: 2px 4px;
+}
+
+.card-content {
+    font-size: 14px;
+    color: rgb(244, 227, 227);
+    letter-spacing: 2px;
+    font-family: 'Cabin', sans-serif;
+    margin: 0;
+}
+
 .split {
     height: 100%;
     width: 50%;

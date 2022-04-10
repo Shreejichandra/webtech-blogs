@@ -21,30 +21,30 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
+    <div className="app">
       <Header
         showSignIn={showSignIn}
         setShowSignIn={setShowSignIn}
         isLoggedIn={isLoggedIn}
         setIsLoggedIn={setIsLoggedIn}
-      />
+      />{" "}
       <SignInUp
         showSignIn={showSignIn}
         setShowSignIn={setShowSignIn}
         setIsLoggedIn={setIsLoggedIn}
-      />
+      />{" "}
       <BrowserRouter>
         <Routes>
-          <Route exact path="/" element={<Feed />} />
-          <Route exact path="/profile" element={<Profile />} />
-          <Route exact path="/article" element={<ArticleView />} />
-          <Route path="/create" element={<Creator />} />
-          <Route path="/userarticles" element={<UserArticles />} />
-          <Route path="/*" element={<Feed />} />
-          <Route exact path="/article/:id" element={<ArticleView />} />
-          {/* <Route path="/article/:id" element={(props) => (<ArticleView {...props} />)} /> */}
-        </Routes>
-      </BrowserRouter>
+          <Route exact path="/" element={<Feed />} />{" "}
+          <Route exact path="/profile" element={<Profile />} />{" "}
+          <Route exact path="/article" element={<ArticleView />} />{" "}
+          <Route path="/create" element={<Creator />} />{" "}
+          <Route path="/userarticles" element={<UserArticles />} />{" "}
+          <Route path="/*" element={<Feed />} />{" "}
+          <Route exact path="/article/:id" element={<ArticleView />} />{" "}
+          {/* <Route path="/article/:id" element={(props) => (<ArticleView {...props} />)} /> */}{" "}
+        </Routes>{" "}
+      </BrowserRouter>{" "}
     </div>
   );
 }
