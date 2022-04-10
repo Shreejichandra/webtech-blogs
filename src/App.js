@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Feed from "./components/Feed";
@@ -12,10 +12,17 @@ function App() {
   const [showSignIn, setShowSignIn] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, [])
+
   return (
     <div className="App">
       <Header showSignIn={showSignIn} setShowSignIn={setShowSignIn} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
-      <SignInUp showSignIn={showSignIn} setShowSignIn={setShowSignIn} />
+      <SignInUp showSignIn={showSignIn} setShowSignIn={setShowSignIn} setIsLoggedIn={setIsLoggedIn} />
       <BrowserRouter>
         <Routes>
           <Route exact path="/" element={<Feed />} />

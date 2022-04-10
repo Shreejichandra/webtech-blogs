@@ -9,7 +9,30 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-function SignIn({handleClose}) {
+function SignIn({handleClose, setIsLoggedIn}) {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const signIn = () => {
+        const payload = {
+            email,
+            password
+        }
+
+        fetch("http://localhost:8000/users/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        }).then(res => {
+            return res.json();
+        }).then(data => {
+            console.log(data);
+            localStorage.setItem("token", data.token);
+            setIsLoggedIn(true);
+            handleClose();
+        });
+    }
+
     return (
         <div>
             <DialogContent>
@@ -24,6 +47,8 @@ function SignIn({handleClose}) {
                     type="email"
                     fullWidth
                     variant="standard"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
                 />
                 <TextField
                     margin="dense"
@@ -32,17 +57,44 @@ function SignIn({handleClose}) {
                     type="password"
                     fullWidth
                     variant="standard"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
                 />
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose}>Close</Button>
-                <Button onClick={handleClose}>SignIn</Button>
+                <Button onClick={signIn}>SignIn</Button>
             </DialogActions>
         </div>
     );
 }
 
-function SignUp({handleClose}) {
+function SignUp({handleClose, setIsLoggedIn}) {
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const signUp = () => {
+        const payload = {
+            name,
+            email,
+            password
+        }
+
+        fetch("http://localhost:8000/users", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        }).then(res => {
+            return res.json();
+        }).then(data => {
+            console.log(data);
+            localStorage.setItem("token", data.token);
+            setIsLoggedIn(true);
+            handleClose();
+        });
+    }
+
     return (
         <div>
             <DialogContent>
@@ -57,6 +109,8 @@ function SignUp({handleClose}) {
                     type="text"
                     fullWidth
                     variant="standard"
+                    value={name}
+                    onChange={e => setName(e.target.value)}
                 />
                 <TextField
                     margin="dense"
@@ -65,6 +119,8 @@ function SignUp({handleClose}) {
                     type="email"
                     fullWidth
                     variant="standard"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
                 />
                 <TextField
                     margin="dense"
@@ -73,13 +129,15 @@ function SignUp({handleClose}) {
                     type="password"
                     fullWidth
                     variant="standard"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
                 />
                 <label>Avatar: </label>
                 <input type="file" id="avatar" name="avatar" />
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose}>Close</Button>
-                <Button onClick={handleClose}>SignIn</Button>
+                <Button onClick={signUp}>SignUp</Button>
             </DialogActions>
         </div>
     );
@@ -96,30 +154,30 @@ function TabPanel({children, value, index}) {
     )
 }
 
-function SignInUp({showSignIn, setShowSignIn}) {
-    const [value, setValue] = useState(0);
+function SignInUp({showSignIn, setShowSignIn, setIsLoggedIn}) {
+    const [tabValue, setTabValue] = useState(0);
 
     const handleClose = () => {
         setShowSignIn(false);
     }
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
+    const handleTabChange = (event, newValue) => {
+        setTabValue(newValue);
     };
 
     return (
         <div>
             <Dialog open={showSignIn} onClose={handleClose}>
                 <DialogTitle>
-                    <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                    <Tabs value={tabValue} onChange={handleTabChange} aria-label="basic tabs example">
                         <Tab label="Sign In" id="1" />
                         <Tab label="Sign Up" id="2" />
                     </Tabs>
-                    <TabPanel value={value} index={0}>
-                        <SignIn handleClose={handleClose} />
+                    <TabPanel value={tabValue} index={0}>
+                        <SignIn handleClose={handleClose} setIsLoggedIn={setIsLoggedIn} />
                     </TabPanel>
-                    <TabPanel value={value} index={1}>
-                        <SignUp handleClose={handleClose} />
+                    <TabPanel value={tabValue} index={1}>
+                        <SignUp handleClose={handleClose} setIsLoggedIn={setIsLoggedIn} />
                     </TabPanel>
                 </DialogTitle>
             </Dialog>

@@ -26,7 +26,7 @@ const Header = ({ showSignIn, setShowSignIn, isLoggedIn, setIsLoggedIn }) => {
           </Typography>
 
           {isLoggedIn ? (
-            <Profile />
+            <Profile setIsLoggedIn={setIsLoggedIn} />
           ) : (
             <Button style={{color: "white"}} onClick={openSignInUp}>
               SignIn/SignUp
