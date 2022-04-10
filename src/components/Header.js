@@ -1,12 +1,16 @@
-import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import Button from '@mui/material/Button';
+
 import Profile from "./Profile";
 
-const ResponsiveAppBar = () => {
-  var isLoggedIn = true;
+const Header = ({ showSignIn, setShowSignIn, isLoggedIn, setIsLoggedIn }) => {
+
+  const openSignInUp = () => {
+    setShowSignIn(true);
+  }
 
   return (
     <AppBar position="static">
@@ -22,22 +26,16 @@ const ResponsiveAppBar = () => {
           </Typography>
 
           {isLoggedIn ? (
-            <Profile />
+            <Profile setIsLoggedIn={setIsLoggedIn} />
           ) : (
-            <Container maxWidth="xl">
-              <Typography
-                variant="h6"
-                noWrap
-                component="div"
-                sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
-              >
-                Sign In
-              </Typography>
-            </Container>
+            <Button style={{color: "white"}} onClick={openSignInUp}>
+              SignIn/SignUp
+            </Button>
           )}
         </Toolbar>
       </Container>
     </AppBar>
   );
 };
-export default ResponsiveAppBar;
+
+export default Header;

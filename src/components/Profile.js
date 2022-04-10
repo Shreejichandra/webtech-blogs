@@ -9,16 +9,14 @@ import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 
-// const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Logout"];
-
-function Profile() {
+function Profile({setIsLoggedIn}) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
+
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -30,11 +28,25 @@ function Profile() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-  return (
-    // <div className="feed">
-    //     Hello from Profile
 
-    // </div>
+  const logout = () => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+    handleCloseUserMenu();
+  }
+
+  const settings = [
+    {
+      name: "Profile",
+      onClick: handleCloseUserMenu
+    },
+    {
+      name: "Logout",
+      onClick: logout
+    }
+  ];
+
+  return (
     <Container maxWidth="l">
       <Typography
         variant="h6"
@@ -121,8 +133,8 @@ function Profile() {
             onClose={handleCloseUserMenu}
           >
             {settings.map((setting) => (
-              <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                <Typography textAlign="center">{setting}</Typography>
+              <MenuItem key={setting.name} onClick={setting.onClick}>
+                <Typography textAlign="center">{setting.name}</Typography>
               </MenuItem>
             ))}
           </Menu>
