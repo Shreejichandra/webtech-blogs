@@ -8,10 +8,10 @@ import Menu from '@mui/material/Menu';
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import DoneIcon from '@mui/icons-material/Done';
-
+import { useHistory, useParams } from 'react-router-dom'
 import createEditor from '../utils/editor'
 
-const App = () => {
+const ArticleView = () => {
   const [isliked, setIsLiked] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -19,6 +19,7 @@ const App = () => {
   const [titleEditor, setTitleEditor] = useState(null);
   const [title, setTitle] = useState("ArticleTitle");
   const [body, setBody] = useState("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a lorem orci. Aenean efficitur quam vel dui maximus hendrerit. Pellentesque vitae nunc lacinia, semper eros non, varius ex. Suspendisse vel augue in lacus malesuada sagittis. Nulla tristique nec libero ac dignissim. Nam eget leo quis enim pellentesque interdum. Quisque porttitor nisl tellus, ac bibendum nunc rhoncus sed.");
+
 
   const MyOptions = ["Edit", "Delete"];
 
@@ -35,6 +36,10 @@ const App = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const xyz = useParams()
+  console.log(xyz)
+  // const { id } = props.match.params
+  // console.log(props)
 
   const handleDoneEditing = () => {
     setIsEditing(false);
@@ -67,10 +72,11 @@ const App = () => {
 
   return (
     <div>
+      {/* <h2>{this.props.match.params.id}</h2> */}
       <CardHeader
         action={
           <div>
-            { isEditing &&
+            {isEditing &&
               <IconButton
                 aria-label="more"
                 aria-haspopup="true"
@@ -130,4 +136,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default ArticleView;

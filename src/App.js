@@ -22,6 +22,8 @@ function App() {
           <Route exact path="/article" element={<ArticleView />} />
           <Route path="/create" element={<Creator />} />
           <Route path="/*" element={<Feed />} />
+          <Route exact path="/article/:id" element={<ArticleView />} />
+          {/* <Route path="/article/:id" element={(props) => (<ArticleView {...props} />)} /> */}
         </Routes>
       </BrowserRouter>
     </div>
