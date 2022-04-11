@@ -23,7 +23,10 @@ const ArticleView = () => {
   const [articleData, setArticleData] = useState({
     title: "",
     body: "",
-    author: "",
+    author: {
+      name: "",
+      _id: ""
+    },
     date: ""
   });
   const id = useParams().id;
@@ -36,6 +39,10 @@ const ArticleView = () => {
     .then(res => {
       return res.json();
     }).then(data => {
+      console.log(data);
+      const date = new Date(data.createdAt);
+      const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+      data.date = date.toLocaleDateString("en-US", dateOptions);
       setArticleData(data);
     });
     
@@ -151,7 +158,7 @@ const ArticleView = () => {
             </IconButton>
 
             { /* Options Icon */ }
-            { localStorage.getItem("user_id") === articleData.author &&
+            { localStorage.getItem("user_id") === articleData.author._id &&
               <IconButton
                 aria-label="more"
                 onClick={handleClick}
@@ -176,11 +183,11 @@ const ArticleView = () => {
             </Menu>
           </div>
         }
-        avatar={<Avatar alt="Emy Sharp" src={require("./logo192.png")} />}
-        title="Shrimp and Chorizo Paella"
+        avatar={<Avatar alt={ articleData.author.name } src={`http://localhost:8000/users/${articleData.author._id}/avatar`} />}
+        title={ articleData.author.name }
         // subheader="September 14, 2016"
         subheader={
-          <Typography sx={{ color: "white" }}>September 14, 2016</Typography>
+          <Typography sx={{ color: "white" }}>{ articleData.date }</Typography>
         }
       />
       <h2 className="article-title">{ articleData.title }</h2>

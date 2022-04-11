@@ -57,7 +57,7 @@ export default function FeedCard(props) {
             <CardHeader
               className="card-header"
               avatar={
-                <Avatar alt={props.author} src={require("./logo192.png")} />
+                <Avatar alt={props.author} src={`http://localhost:8000/users/${props.authorId}/avatar`} />
               }
               title={props.author}
             />

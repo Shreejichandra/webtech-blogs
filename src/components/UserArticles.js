@@ -22,7 +22,7 @@ export default function UserArticles() {
   return (
     <div class="container">
       <div class="split left" overflow="scroll">
-        <img alt={ name } src="logo192.png" />
+        <img alt={ name } src={`http://localhost:8000/users/${localStorage.getItem("user_id")}/avatar`} />
         <h2>{ name }</h2>{" "}
       </div>
 

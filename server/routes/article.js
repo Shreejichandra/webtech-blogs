@@ -103,7 +103,10 @@ router.get("/articles/:id", async (req, res) => {
     const user_id = req.body.user_id;
 
     try {
-        const article = await Article.findOne({ _id });
+        let article = await Article.findOne({ _id });
+        const user = await User.find({ _id: article.author });
+        article["author"] = user[0];
+        console.log(article);
 
         if (!article) res.status(404).send();
 

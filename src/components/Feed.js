@@ -33,7 +33,7 @@ export default function Feed({ user, homePage }) {
       const localElements = data.map((article) => {
         const date = new Date(article.createdAt);
         const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-        return <FeedCard article_id={article._id} title={article.title} text={article.body} author={article.author.name} date={date.toLocaleDateString("en-US", dateOptions)} />;
+        return <FeedCard article_id={article._id} title={article.title} text={article.body} author={article.author.name} authorId={article.author._id} date={date.toLocaleDateString("en-US", dateOptions)} />;
       });
       setElements(localElements);
     });
