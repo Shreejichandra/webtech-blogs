@@ -35,12 +35,12 @@ function App() {
       />
       {/* <BrowserRouter> */}
       <Routes>
-        <Route exact path="/" element={<Feed />} />
+        <Route exact path="/" element={<Feed homePage={true} />} />
         <Route exact path="/profile" element={<Profile />} />
         <Route exact path="/article" element={<ArticleView />} />
         <Route path="/create" element={<Creator />} />
         <Route path="/userarticles" element={<UserArticles />} />
-        <Route path="/*" element={<Feed />} />
+        <Route path="/*" element={<Feed homePage={true} />} />
         <Route exact path="/article/:id" element={<ArticleView />} />
         {/* <Route path="/article/:id" element={(props) => (<ArticleView {...props} />)} /> */}
       </Routes>

@@ -3,7 +3,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Sansita+Swashed&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Cabin&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Beau+Rivage&display=swap');
-.app {
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@200&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik+Microbe&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
+body {
     /* background-color: #121212; */
     background-image: url(bg-image2.jpg);
     background-repeat: repeat;
@@ -50,10 +54,24 @@
   padding: 10px; */
 }
 
+.user-feed {
+    align-items: center;
+    margin: 0% 20%;
+    padding: 2%;
+    display: grid;
+    grid-template-columns: auto;
+    gap: 0% 2%;
+    /* text-align: center; */
+    align-items: center;
+    justify-content: center;
+    /* background-color: #2196F3;
+  padding: 10px; */
+}
+
 .feedcard {
     padding-bottom: 1%;
     width: 500px;
-    height: 500px;
+    height: 450px;
     /* align-items: center;
     justify-content: center; */
 }
@@ -86,7 +104,6 @@
 
 .split {
     height: 100%;
-    width: 50%;
     position: fixed;
     z-index: 1;
     /* top: 0; */
@@ -97,10 +114,37 @@
 
 /* Control the left side */
 
+
+/* .container {
+    vertical-align: middle;
+} */
+
 .left {
     left: 0;
     border-right: solid 1px;
+    vertical-align: middle;
+    width: 40%;
+    /* position: absolute; */
     /* background-color: #111; */
+}
+
+.left img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 30%;
+    margin-top: 100px;
+}
+
+.left p {
+    color: #fff;
+    font-size: 34px;
+    font-weight: bold;
+    font-family: 'Source Code Pro', monospace;
+    /* font-family: 'Rubik Microbe', cursive; */
+    text-align: center;
+    letter-spacing: 5px;
+    /* margin-top: auto; */
 }
 
 
@@ -109,6 +153,7 @@
 .right {
     right: 0;
     margin-left: 5px;
+    width: 60%;
     /* padding: 5px; */
     /* background-color: red; */
 }
@@ -130,4 +175,69 @@
 .centered img {
     width: 150px;
     border-radius: 50%;
+}
+
+#outer {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+}
+
+.article {
+    height: 100%;
+    /* flex: 1; */
+}
+
+.article-title {
+    background: linear-gradient( to right, rgb(190, 61, 255), rgb(255, 46, 227));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+    font-size: 5vmin;
+    line-height: 1;
+    margin: 12px;
+}
+
+.article-image {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+.article-body {
+    font-size: 18px;
+    color: rgb(244, 227, 227);
+    /* letter-spacing: 2px; */
+    font-family: 'Roboto Slab', serif;
+    margin: 5% 12.5%;
+    font-weight: normal;
+    text-align: justify;
+}
+
+.editable {
+    color: #fff;
+}
+
+.form-group {
+    color: #fff;
+    text-align: center;
+    margin-left: 10%;
+    margin-right: 10%;
+    /* border-color: teal;
+    color: purple;
+    font-style: italic; */
+}
+
+.editable-title {
+    padding-top: 10px;
+    color: pink;
+    font-size: 36px;
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+.editable-text {
+    font-size: 20px;
+    font-family: 'Roboto Slab', serif;
+    font-weight: 700
 }
