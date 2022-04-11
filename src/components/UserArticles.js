@@ -1,9 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import SplitterLayout from "react-splitter-layout";
-import "react-splitter-layout/lib/index.css";
 import Feed from "./Feed";
-import "react-splitter-layout/lib/index.css";
 import "./styles.css";
 
 // export default class UserArticles extends React.Component {

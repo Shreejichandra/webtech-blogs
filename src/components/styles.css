@@ -131,3 +131,57 @@
     width: 150px;
     border-radius: 50%;
 }
+
+
+.article {
+    height: 100%;
+    flex: 2
+}
+
+.article-body-edit {
+    color: white;
+    border-style: solid;
+    border-color: white;
+}
+
+.article-body {
+    color: white;
+}
+
+.author {
+    color: white;
+    font-size: 15px;
+}
+
+.MUITypography-root{
+    color: white !important;
+}
+
+.cover {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    border-radius: 2%;
+}
+
+.editable {
+    color: #fff;
+}
+
+.form-group {
+    color: #fff;
+    text-align: center;
+    margin-left: 10%;
+    margin-right: 10%;
+    /* border-color: teal;
+    color: purple;
+    font-style: italic; */
+}
+
+.editable-title {
+    padding-top: 10px;
+    color: pink;
+    font-size: 36px;
+    font-family: 'Josefin Sans', sans-serif;
+}

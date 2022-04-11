@@ -10,6 +10,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import DoneIcon from '@mui/icons-material/Done';
 import { useHistory, useParams } from 'react-router-dom'
 import createEditor from '../utils/editor'
+import Typography from "@mui/material/Typography";
 
 const ArticleView = () => {
   const [isliked, setIsLiked] = useState(false);
@@ -71,9 +72,9 @@ const ArticleView = () => {
   ]
 
   return (
-    <div>
+    <div className="article">
       {/* <h2>{this.props.match.params.id}</h2> */}
-      <CardHeader
+      <CardHeader className="author"
         action={
           <div>
             {isEditing &&
@@ -82,7 +83,7 @@ const ArticleView = () => {
                 aria-haspopup="true"
                 aria-controls="long-menu"
               >
-                <DoneIcon onClick={handleDoneEditing} />
+                <DoneIcon onClick={handleDoneEditing} style={{ color: "white" }} />
               </IconButton>
             }
 
@@ -95,7 +96,7 @@ const ArticleView = () => {
               {isliked ? (
                 <FavoriteIcon style={{ color: "red" }} />
               ) : (
-                <FavoriteBorderOutlinedIcon />
+                <FavoriteBorderOutlinedIcon style={{ color: "white" }} />
               )}
             </IconButton>
 
@@ -105,7 +106,7 @@ const ArticleView = () => {
               aria-haspopup="true"
               aria-controls="long-menu"
             >
-              <MoreVertIcon onClick={handleClick} />
+              <MoreVertIcon onClick={handleClick} style={{ color: "white" }} />
             </IconButton>
 
             <Menu
@@ -124,14 +125,19 @@ const ArticleView = () => {
         }
         avatar={<Avatar alt="Emy Sharp" src="logo192.png" />}
         title="Shrimp and Chorizo Paella"
-        subheader="September 14, 2016"
+        // subheader="September 14, 2016"
+        subheader={<Typography sx={{ color: 'white', }}>September 14, 2016</Typography>}
       />
       <h2 className="article-title">Article Title</h2>
-      <img src="./logo192.png" alt="blog_image" />
+      <img src={require("./card1.jpg")} alt="blog_image" className="cover" />
 
-      <p className="article-body">
+      {isEditing ? <p className="article-body-edit" >
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a lorem orci. Aenean efficitur quam vel dui maximus hendrerit. Pellentesque vitae nunc lacinia, semper eros non, varius ex. Suspendisse vel augue in lacus malesuada sagittis. Nulla tristique nec libero ac dignissim. Nam eget leo quis enim pellentesque interdum. Quisque porttitor nisl tellus, ac bibendum nunc rhoncus sed.
-      </p>
+      </p> :
+        <p className="article-body" >
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a lorem orci. Aenean efficitur quam vel dui maximus hendrerit. Pellentesque vitae nunc lacinia, semper eros non, varius ex. Suspendisse vel augue in lacus malesuada sagittis. Nulla tristique nec libero ac dignissim. Nam eget leo quis enim pellentesque interdum. Quisque porttitor nisl tellus, ac bibendum nunc rhoncus sed.
+        </p>
+      }
     </div>
   );
 };
