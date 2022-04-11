@@ -205,6 +205,39 @@ body {
     width: 50%;
 }
 
+.article {
+    height: 100%;
+    flex: 2
+}
+
+.article-body-edit {
+    color: white;
+    border-style: solid;
+    border-color: white;
+}
+
+.article-body {
+    color: white;
+}
+
+.author {
+    color: white;
+    font-size: 15px;
+}
+
+.MUITypography-root {
+    color: white !important;
+}
+
+.cover {
+    border-radius: 2%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    border-radius: 2%;
+}
+
 .article-body {
     font-size: 18px;
     color: rgb(244, 227, 227);

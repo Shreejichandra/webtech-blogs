@@ -10,6 +10,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import DoneIcon from "@mui/icons-material/Done";
 import { useHistory, useParams } from "react-router-dom";
 import createEditor from "../utils/editor";
+import Typography from "@mui/material/Typography";
 
 const ArticleView = () => {
   const [isliked, setIsLiked] = useState(false);
@@ -79,7 +80,7 @@ const ArticleView = () => {
     <div className="article">
       {/* <h2>{this.props.match.params.id}</h2> */}
       <CardHeader
-        className="article-card-header"
+        className="article-card-header author"
         action={
           <div>
             {isEditing && (
@@ -88,7 +89,10 @@ const ArticleView = () => {
                 aria-haspopup="true"
                 aria-controls="long-menu"
               >
-                <DoneIcon onClick={handleDoneEditing} />
+                <DoneIcon
+                  onClick={handleDoneEditing}
+                  style={{ color: "white" }}
+                />
               </IconButton>
             )}
 
@@ -101,7 +105,7 @@ const ArticleView = () => {
               {isliked ? (
                 <FavoriteIcon style={{ color: "red" }} />
               ) : (
-                <FavoriteBorderOutlinedIcon />
+                <FavoriteBorderOutlinedIcon style={{ color: "white" }} />
               )}
             </IconButton>
 
@@ -111,7 +115,7 @@ const ArticleView = () => {
               aria-haspopup="true"
               aria-controls="long-menu"
             >
-              <MoreVertIcon onClick={handleClick} style={{ color: "red" }} />
+              <MoreVertIcon onClick={handleClick} style={{ color: "white" }} />
             </IconButton>
 
             <Menu
@@ -130,35 +134,33 @@ const ArticleView = () => {
         }
         avatar={<Avatar alt="Emy Sharp" src={require("./logo192.png")} />}
         title="Shrimp and Chorizo Paella"
-        subheader="September 14, 2016"
+        // subheader="September 14, 2016"
+        subheader={
+          <Typography sx={{ color: "white" }}>September 14, 2016</Typography>
+        }
       />
-      <h2 className="article-title">Life of an Engineer</h2>
-      <img
-        src={require("./card1.jpg")}
-        alt="blog_image"
-        className="article-image"
-      />
+      <h2 className="article-title">Article Title</h2>
+      <img src={require("./card1.jpg")} alt="blog_image" className="cover" />
 
-      <p className="article-body">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a lorem
-        orci. Aenean efficitur quam vel dui maximus hendrerit. Pellentesque
-        vitae nunc lacinia, semper eros non, varius ex. Suspendisse vel augue in
-        lacus malesuada sagittis. Nulla tristique nec libero ac dignissim. Nam
-        eget leo quis enim pellentesque interdum. Quisque porttitor nisl tellus,
-        ac bibendum nunc rhoncus sed. Contrary to popular belief, Lorem Ipsum is
-        not simply random text. <br />
-        It has roots in a piece of classical Latin literature from 45 BC, making
-        it over 2000 years old. Richard McClintock, a Latin professor at
-        Hampden-Sydney College in Virginia, looked up one of the more obscure
-        Latin words, consectetur, from a Lorem Ipsum passage, and going through
-        the cites of the word in classical literature, discovered the
-        undoubtable source. <br />
-        Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus
-        Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written
-        in 45 BC. This book is a treatise on the theory of ethics, very popular
-        during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum
-        dolor sit amet..", comes from a line in section 1.10.32.
-      </p>
+      {isEditing ? (
+        <p className="article-body-edit">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a lorem
+          orci. Aenean efficitur quam vel dui maximus hendrerit. Pellentesque
+          vitae nunc lacinia, semper eros non, varius ex. Suspendisse vel augue
+          in lacus malesuada sagittis. Nulla tristique nec libero ac dignissim.
+          Nam eget leo quis enim pellentesque interdum. Quisque porttitor nisl
+          tellus, ac bibendum nunc rhoncus sed.
+        </p>
+      ) : (
+        <p className="article-body">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a lorem
+          orci. Aenean efficitur quam vel dui maximus hendrerit. Pellentesque
+          vitae nunc lacinia, semper eros non, varius ex. Suspendisse vel augue
+          in lacus malesuada sagittis. Nulla tristique nec libero ac dignissim.
+          Nam eget leo quis enim pellentesque interdum. Quisque porttitor nisl
+          tellus, ac bibendum nunc rhoncus sed.
+        </p>
+      )}
     </div>
   );
 };
