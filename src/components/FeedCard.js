@@ -23,23 +23,13 @@ const useStyles = makeStyles({
   },
 });
 
-// <Grid container spacing={2}>
-//   <Grid item xs={8}>
-//     <Item>xs=8</Item>
-//   </Grid>
-//   <Grid item xs={4}>
-//     <Item>xs=4</Item>
-//   </Grid>
-// </Grid>
-
 export default function FeedCard(props) {
   const classes = useStyles();
 
   return (
     <div className="feedcard">
-      {/* <Grid container justify="center"> */}
       <Card className={classes.root} style={{ backgroundColor: "#383838" }}>
-        <CardActionArea component={RouterLink} to={`/article/${props.id}`}>
+        <CardActionArea component={RouterLink} to={`/article/${props.article_id}`}>
           <h2>{props.title}</h2>
 
           <CardMedia
@@ -51,10 +41,7 @@ export default function FeedCard(props) {
           />
 
           <CardContent>
-            {/* <Typography variant="body2" className="card-content"> */}
-            <p className="card-content"> {props.text}</p>
-
-            {/* </Typography> */}
+            <p className="card-content"> {props.text.substring(0, 200) + (props.text.length > 200 ? "..." : "")}</p>
           </CardContent>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <p
@@ -64,26 +51,19 @@ export default function FeedCard(props) {
                 fontSize: "12px",
               }}
             >
-              September 14, 2016
+              {props.date}
+              {/* September 14, 2016 */}
             </p>
             <CardHeader
               className="card-header"
               avatar={
-                <Avatar alt="Emy Sharp" src={require("./my_picture.jpg")} />
+                <Avatar alt={props.author} src={require("./logo192.png")} />
               }
-              title="Shreeji Chandra"
-              // subheader="September 14, 2016"
-              //   subheader={
-              //     <Typography sx={{ color: "rgb(255, 46, 227)" }}>
-              //       September 14, 2016
-              //     </Typography>
-              //   }
-              // action={<FavoriteIcon />}
+              title={props.author}
             />
           </div>
         </CardActionArea>
       </Card>
-      {/* </Grid> */}
     </div>
   );
 }

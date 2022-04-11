@@ -1,5 +1,6 @@
 const express = require("express");
 const Article = require("../models/article");
+const User = require("../models/user");
 const router = new express.Router();
 const auth = require("../middleware/auth");
 
@@ -18,7 +19,7 @@ router.post("/articles", auth, async (req, res) => {
     }
 });
 
-// List all the Articles
+// List all the Articles of a user
 // GET /articles/?completed
 // GET /articles/?limit&skip
 // GET /articles/?sortBy=*field*_*order(asc or desc)*
@@ -34,30 +35,75 @@ router.get("/articles", auth, async (req, res) => {
     }
 
     try {
-        // const articles = await Article.find({ author: req.user._id });  <-- Alternate Method
-        await req.user
-            .populate({
-                path: "articles",
-                match,
-                options: {
-                    limit: parseInt(req.query.limit),
-                    skip: parseInt(req.query.skip),
-                    sort
-                }
-            })
-            .execPopulate();
-        res.status(200).send(req.user.articles);
+        let articles = await Article.find({ author: req.user._id });
+        for (let i=0; i<articles.length; i++) {
+            articles[i]["author"] = req.user;
+        }
+        // await req.user
+        //     .populate({
+        //         path: "articles",
+        //         match,
+        //         options: {
+        //             limit: parseInt(req.query.limit),
+        //             skip: parseInt(req.query.skip),
+        //             sort
+        //         }
+        //     })
+        //     .execPopulate();
+        res.status(200).send(articles);
     } catch (err) {
         res.status(500).send(err);
     }
 });
 
-// Query a single Article
-router.get("/articles/:id", auth, async (req, res) => {
-    const _id = req.params.id;
+
+// List all the Articles
+// GET /articles/?completed
+// GET /articles/?limit&skip
+// GET /articles/?sortBy=*field*_*order(asc or desc)*
+router.get("/articles/all", async (req, res) => {
+    const match = {};
+    const sort = {};
+
+    if (req.query.completed) match.completed = req.query.completed === "true";
+
+    if (req.query.sortBy) {
+        const parts = req.query.sortBy.split("_");
+        sort[parts[0]] = parts[1] === "asc" ? 1 : -1;
+    }
 
     try {
-        const article = await Article.findOne({ _id, author: req.user._id });
+        let articles = await Article.find({});
+        for (let i=0; i<articles.length; i++) {
+            const user = await User.find({ _id: articles[i].author });
+            articles[i]["author"] = user[0];
+        }
+        // await req.user
+        //     .populate({
+        //         path: "articles",
+        //         match,
+        //         options: {
+        //             limit: parseInt(req.query.limit),
+        //             skip: parseInt(req.query.skip),
+        //             sort
+        //         }
+        //     })
+       //     .execPopulate();
+        res.status(200).send(articles);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send(err);
+    }
+});
+
+
+// Query a single Article
+router.get("/articles/:id", async (req, res) => {
+    const _id = req.params.id;
+    const user_id = req.body.user_id;
+
+    try {
+        const article = await Article.findOne({ _id });
 
         if (!article) res.status(404).send();
 
@@ -70,7 +116,7 @@ router.get("/articles/:id", auth, async (req, res) => {
 // Update a Single Article
 router.patch("/articles/:id", auth, async (req, res) => {
     const updates = Object.keys(req.body);
-    const validUpdates = ["description", "completed"];
+    const validUpdates = ["title", "body"];
     const isValidOperation = updates.every(update =>
         validUpdates.includes(update)
     );
