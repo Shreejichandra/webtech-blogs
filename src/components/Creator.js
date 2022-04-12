@@ -3,6 +3,9 @@ import createEditor from "../utils/editor";
 import "./../../node_modules/medium-editor/dist/css/medium-editor.min.css";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Edit from "@mui/icons-material/Edit";
+import IconButton from "@mui/material/IconButton";
 
 function Creator() {
   const [title, setTitle] = useState("Enter Title...");
@@ -44,7 +47,7 @@ function Creator() {
       </h2>
 
       <label htmlFor="contained-button-file">
-        <Input accept="image/*" id="contained-button-file" type="file" />
+        {/* <Input accept="image/*" id="contained-button-file" type="file" />
         <Button
           variant="contained"
           component="span"
@@ -56,8 +59,20 @@ function Creator() {
           }}
         >
           Upload Image
-        </Button>
-        <img src={require("./card1.jpg")} alt="blog_image" className="cover" />
+        </Button> */}
+        <div className="parent">
+          <img
+            src={require("./card1.jpg")}
+            alt="blog_image"
+            className="cover-create"
+          />
+
+          <div className="child">
+            <IconButton>
+              <Edit style={{ color: "white" }} />
+            </IconButton>
+          </div>
+        </div>
       </label>
       <div className="form-group">
         <textarea
