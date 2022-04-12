@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CardHeader from "@mui/material/CardHeader";
 import Avatar from "@mui/material/Avatar";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -7,9 +7,9 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import DoneIcon from "@mui/icons-material/Done";
-import { useHistory, useParams } from "react-router-dom";
-import createEditor from "../utils/editor";
+import DoneIcon from '@mui/icons-material/Done';
+import { useParams, useNavigate } from 'react-router-dom';
+import createEditor from '../utils/editor';
 import Typography from "@mui/material/Typography";
 import { style } from "@mui/system";
 
@@ -19,12 +19,36 @@ const ArticleView = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [bodyEditor, setBodyEditor] = useState(null);
   const [titleEditor, setTitleEditor] = useState(null);
-  const [title, setTitle] = useState("ArticleTitle");
-  const [body, setBody] = useState(
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a lorem orci. Aenean efficitur quam vel dui maximus hendrerit. Pellentesque vitae nunc lacinia, semper eros non, varius ex. Suspendisse vel augue in lacus malesuada sagittis. Nulla tristique nec libero ac dignissim. Nam eget leo quis enim pellentesque interdum. Quisque porttitor nisl tellus, ac bibendum nunc rhoncus sed."
-  );
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a lorem orci. Aenean efficitur quam vel dui maximus hendrerit. Pellentesque vitae nunc lacinia, semper eros non, varius ex. Suspendisse vel augue in lacus malesuada sagittis. Nulla tristique nec libero ac dignissim. Nam eget leo quis enim pellentesque interdum. Quisque porttitor nisl tellus, ac bibendum nunc rhoncus sed.");
+  const [articleData, setArticleData] = useState({
+    title: "",
+    body: "",
+    author: {
+      name: "",
+      _id: ""
+    },
+    date: ""
+  });
+  const id = useParams().id;
+  const navigate = useNavigate();
 
-  const MyOptions = ["Edit", "Delete"];
+  useEffect(() => {
+
+    // Fetch the article
+    fetch("http://localhost:8000/articles/" + id, { method: "GET" })
+      .then(res => {
+        return res.json();
+      }).then(data => {
+        console.log(data);
+        const date = new Date(data.createdAt);
+        const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+        data.date = date.toLocaleDateString("en-US", dateOptions);
+        setArticleData(data);
+      });
+
+  }, []);
+
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -39,16 +63,27 @@ const ArticleView = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const xyz = useParams();
-  console.log(xyz);
-  // const { id } = props.match.params
-  // console.log(props)
 
   const handleDoneEditing = () => {
-    setIsEditing(false);
-    titleEditor.destroy();
-    bodyEditor.destroy();
-  };
+    let headers = new Headers();
+    headers.append("Authorization", "Bearer " + localStorage.getItem("token"));
+    headers.append("Content-Type", "application/json");
+
+    const payload = { title, body }
+
+    fetch("http://localhost:8000/articles/" + id, {
+      method: "PATCH",
+      headers,
+      body: JSON.stringify(payload)
+    })
+      .then(res => {
+        return res.json();
+      }).then(data => {
+        setIsEditing(false);
+        titleEditor.destroy();
+        bodyEditor.destroy();
+      });
+  }
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -62,9 +97,22 @@ const ArticleView = () => {
   };
 
   const handleDeleteClick = () => {
-    console.log("Delete");
-    setAnchorEl(null);
-  };
+    let headers = new Headers();
+    headers.append("Authorization", "Bearer " + localStorage.getItem("token"));
+    headers.append("Content-Type", "application/json");
+
+    fetch("http://localhost:8000/articles/" + id, {
+      method: "DELETE",
+      headers
+    })
+      .then(res => {
+        return res.json();
+      }).then(data => {
+        console.log(data);
+        setAnchorEl(null);
+        navigate("/");
+      });
+  }
 
   const menuOptions = [
     {
@@ -119,14 +167,18 @@ const ArticleView = () => {
               aria-controls="long-menu"
             >
             </IconButton>
-            <IconButton
-              aria-label="more"
-              onClick={handleClick}
-              aria-haspopup="true"
-              aria-controls="long-menu"
-            >
-              <MoreVertIcon onClick={handleClick} style={{ color: "white" }} />
-            </IconButton>
+
+            { /* Options Icon */}
+            {localStorage.getItem("user_id") === articleData.author._id &&
+              <IconButton
+                aria-label="more"
+                onClick={handleClick}
+                aria-haspopup="true"
+                aria-controls="long-menu"
+              >
+                <MoreVertIcon onClick={handleClick} style={{ color: "white" }} />
+              </IconButton>
+            }
 
             <Menu
               anchorEl={anchorEl}
@@ -142,38 +194,20 @@ const ArticleView = () => {
             </Menu>
           </div>
         }
-        avatar={< Avatar alt="Emy Sharp" src={require("./logo192.png")} />}
-        title="Shrimp and Chorizo Paella"
+        avatar={<Avatar alt={articleData.author.name} src={`http://localhost:8000/users/${articleData.author._id}/avatar`} />}
+        title={articleData.author.name}
         // subheader="September 14, 2016"
         subheader={
-          < Typography sx={{ color: "white" }}> September 14, 2016</Typography >
+          <Typography sx={{ color: "white" }}>{articleData.date}</Typography>
         }
       />
-      < h2 className="article-title" > Article Title</h2 >
-      <img src={require("./card1.jpg")} alt="blog_image" className="cover" />
+      <h2 className="article-title">{articleData.title}</h2>
+      <img src="./logo192.png" alt="blog_image" className="cover" />
 
-      {
-        isEditing ? (
-          <p className="article-body-edit">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a lorem
-            orci. Aenean efficitur quam vel dui maximus hendrerit. Pellentesque
-            vitae nunc lacinia, semper eros non, varius ex. Suspendisse vel augue
-            in lacus malesuada sagittis. Nulla tristique nec libero ac dignissim.
-            Nam eget leo quis enim pellentesque interdum. Quisque porttitor nisl
-            tellus, ac bibendum nunc rhoncus sed.
-          </p>
-        ) : (
-          <p className="article-body">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a lorem
-            orci. Aenean efficitur quam vel dui maximus hendrerit. Pellentesque
-            vitae nunc lacinia, semper eros non, varius ex. Suspendisse vel augue
-            in lacus malesuada sagittis. Nulla tristique nec libero ac dignissim.
-            Nam eget leo quis enim pellentesque interdum. Quisque porttitor nisl
-            tellus, ac bibendum nunc rhoncus sed.
-          </p>
-        )
-      }
-    </div >
+      <p className={isEditing ? "article-body-edit article-body" : "article-body"}>
+        {articleData.body}
+      </p>
+    </div>
   );
 };
 

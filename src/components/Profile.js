@@ -31,8 +31,6 @@ function Profile({ setIsLoggedIn }) {
     setAnchorElUser(null);
   };
 
-
-
   const navigate = useNavigate();
   const ArticlesPage = () => {
     navigate("/userarticles");
@@ -41,7 +39,9 @@ function Profile({ setIsLoggedIn }) {
 
   const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user_id");
     setIsLoggedIn(false);
+    navigate("/");
     handleCloseUserMenu();
   }
 
@@ -123,7 +123,7 @@ function Profile({ setIsLoggedIn }) {
         <Box sx={{ flexGrow: 0 }}>
           <Tooltip title="Open settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              <Avatar alt="User" src={`http://localhost:8000/users/${localStorage.getItem("user_id")}/avatar`} />
             </IconButton>
           </Tooltip>
           <Menu
