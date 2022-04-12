@@ -11,6 +11,7 @@ import DoneIcon from "@mui/icons-material/Done";
 import { useHistory, useParams } from "react-router-dom";
 import createEditor from "../utils/editor";
 import Typography from "@mui/material/Typography";
+import { style } from "@mui/system";
 
 const ArticleView = () => {
   const [isliked, setIsLiked] = useState(false);
@@ -96,19 +97,28 @@ const ArticleView = () => {
               </IconButton>
             )}
 
+            <div style={{ display: "inline", border: "1px solid white", borderRadius: "10%", padding: "10px 8px 10px 0px" }}>
+              <IconButton
+                aria-label="more"
+                onClick={handleLike}
+                aria-haspopup="true"
+                aria-controls="long-menu"
+              >
+                {isliked ? (
+                  <FavoriteIcon style={{ color: "red" }} />
+                ) : (
+                  <FavoriteBorderOutlinedIcon style={{ color: "white" }} />
+                )}
+              </IconButton>
+              45
+            </div>
             <IconButton
               aria-label="more"
-              onClick={handleLike}
+              onClick={handleClick}
               aria-haspopup="true"
               aria-controls="long-menu"
             >
-              {isliked ? (
-                <FavoriteIcon style={{ color: "red" }} />
-              ) : (
-                <FavoriteBorderOutlinedIcon style={{ color: "white" }} />
-              )}
             </IconButton>
-
             <IconButton
               aria-label="more"
               onClick={handleClick}
@@ -132,36 +142,38 @@ const ArticleView = () => {
             </Menu>
           </div>
         }
-        avatar={<Avatar alt="Emy Sharp" src={require("./logo192.png")} />}
+        avatar={< Avatar alt="Emy Sharp" src={require("./logo192.png")} />}
         title="Shrimp and Chorizo Paella"
         // subheader="September 14, 2016"
         subheader={
-          <Typography sx={{ color: "white" }}>September 14, 2016</Typography>
+          < Typography sx={{ color: "white" }}> September 14, 2016</Typography >
         }
       />
-      <h2 className="article-title">Article Title</h2>
+      < h2 className="article-title" > Article Title</h2 >
       <img src={require("./card1.jpg")} alt="blog_image" className="cover" />
 
-      {isEditing ? (
-        <p className="article-body-edit">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a lorem
-          orci. Aenean efficitur quam vel dui maximus hendrerit. Pellentesque
-          vitae nunc lacinia, semper eros non, varius ex. Suspendisse vel augue
-          in lacus malesuada sagittis. Nulla tristique nec libero ac dignissim.
-          Nam eget leo quis enim pellentesque interdum. Quisque porttitor nisl
-          tellus, ac bibendum nunc rhoncus sed.
-        </p>
-      ) : (
-        <p className="article-body">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a lorem
-          orci. Aenean efficitur quam vel dui maximus hendrerit. Pellentesque
-          vitae nunc lacinia, semper eros non, varius ex. Suspendisse vel augue
-          in lacus malesuada sagittis. Nulla tristique nec libero ac dignissim.
-          Nam eget leo quis enim pellentesque interdum. Quisque porttitor nisl
-          tellus, ac bibendum nunc rhoncus sed.
-        </p>
-      )}
-    </div>
+      {
+        isEditing ? (
+          <p className="article-body-edit">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a lorem
+            orci. Aenean efficitur quam vel dui maximus hendrerit. Pellentesque
+            vitae nunc lacinia, semper eros non, varius ex. Suspendisse vel augue
+            in lacus malesuada sagittis. Nulla tristique nec libero ac dignissim.
+            Nam eget leo quis enim pellentesque interdum. Quisque porttitor nisl
+            tellus, ac bibendum nunc rhoncus sed.
+          </p>
+        ) : (
+          <p className="article-body">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a lorem
+            orci. Aenean efficitur quam vel dui maximus hendrerit. Pellentesque
+            vitae nunc lacinia, semper eros non, varius ex. Suspendisse vel augue
+            in lacus malesuada sagittis. Nulla tristique nec libero ac dignissim.
+            Nam eget leo quis enim pellentesque interdum. Quisque porttitor nisl
+            tellus, ac bibendum nunc rhoncus sed.
+          </p>
+        )
+      }
+    </div >
   );
 };
 
