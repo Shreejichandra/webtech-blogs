@@ -37,7 +37,7 @@ function App() {
       <Routes>
         <Route exact path="/" element={<Feed homePage={true} />} />
         <Route exact path="/profile" element={<Profile />} />
-        <Route exact path="/article" element={<ArticleView />} />
+        <Route exact path="/article" element={<ArticleView setShowSignIn={setShowSignIn} />} />
         <Route path="/create" element={<Creator />} />
         <Route path="/userarticles" element={<UserArticles />} />
         <Route path="/*" element={<Feed homePage={true} />} />

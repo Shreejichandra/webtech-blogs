@@ -13,8 +13,9 @@ import createEditor from "../utils/editor";
 import Typography from "@mui/material/Typography";
 import { style } from "@mui/system";
 
-const ArticleView = () => {
+const ArticleView = ({ setShowSignIn }) => {
   const [isliked, setIsLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
   const [anchorEl, setAnchorEl] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [bodyEditor, setBodyEditor] = useState(null);
@@ -44,6 +45,22 @@ const ArticleView = () => {
         const date = new Date(data.createdAt);
         const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
         data.date = date.toLocaleDateString("en-US", dateOptions);
+
+        // Set initial "liked" state
+        if (localStorage.getItem("user_id")) {
+          const userId = localStorage.getItem("user_id");
+          let isLiked = false;
+          for (let i=0; i<data.likedBy.length; i++) {
+              if (data.likedBy[i].user === userId) {
+                  isLiked = true;
+                  break;
+              }
+          }
+
+          setIsLiked(isLiked);
+        }
+        
+        setLikeCount(data.likes);
         setArticleData(data);
       });
 
@@ -54,7 +71,25 @@ const ArticleView = () => {
   };
 
   const handleLike = (event) => {
-    setIsLiked(!isliked);
+    if (localStorage.getItem("token")) {
+      let headers = new Headers();
+      headers.append("Authorization", "Bearer " + localStorage.getItem("token"));
+
+      fetch("http://localhost:8000/articles/" + id + "/like", {
+        method: "PATCH",
+        headers,
+      })
+        .then(res => {
+          return res.json();
+        }).then(data => {
+          setIsLiked(data.isLiked);
+          setLikeCount(data.newCount);
+        });
+    } else {
+      // console.log("uausu")
+      // console.log(setShowSignIn)
+      // setShowSignIn(true);
+    }
   };
 
   const open = Boolean(anchorEl);
@@ -165,7 +200,7 @@ const ArticleView = () => {
                   <FavoriteBorderOutlinedIcon style={{ color: "white" }} />
                 )}
               </IconButton>
-              45
+              {likeCount}
             </div>
             <IconButton
               aria-label="more"

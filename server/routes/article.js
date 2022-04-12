@@ -190,6 +190,37 @@ router.patch("/articles/:id", auth, async (req, res) => {
     }
 });
 
+// Increment Likes
+router.patch("/articles/:id/like", auth, async (req, res) => {
+    try {
+        const article = await Article.findById(req.params.id);
+        
+        let present = false;
+        for (let i=0; i<article.likedBy.length; i++) {
+            if (String(article.likedBy[i].user) === String(req.user._id)) {
+                article.likedBy.splice(i, 1);
+                present = true;
+                break;
+            }
+        }
+
+        if (present) {
+            article.likes -= 1;
+        } else {
+            article.likes += 1;
+            article.likedBy = article.likedBy.concat({ user: req.user._id });
+        }
+
+        article.save()
+
+        res.status(200).send({ newCount: article.likes, isLiked: !present });
+
+    } catch (err) {
+        console.log(err);
+        res.status(400).send(err);
+    }
+});
+
 // Delete a Article
 router.delete("/articles/:id", auth, async (req, res) => {
     try {
