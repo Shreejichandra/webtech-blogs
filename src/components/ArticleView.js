@@ -7,9 +7,9 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import DoneIcon from '@mui/icons-material/Done';
-import { useParams, useNavigate } from 'react-router-dom';
-import createEditor from '../utils/editor';
+import DoneIcon from "@mui/icons-material/Done";
+import { useParams, useNavigate } from "react-router-dom";
+import createEditor from "../utils/editor";
 import Typography from "@mui/material/Typography";
 import { style } from "@mui/system";
 
@@ -19,16 +19,16 @@ const ArticleView = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [bodyEditor, setBodyEditor] = useState(null);
   const [titleEditor, setTitleEditor] = useState(null);
-  const [title, setTitle] = useState("");
-  const [body, setBody] = useState("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a lorem orci. Aenean efficitur quam vel dui maximus hendrerit. Pellentesque vitae nunc lacinia, semper eros non, varius ex. Suspendisse vel augue in lacus malesuada sagittis. Nulla tristique nec libero ac dignissim. Nam eget leo quis enim pellentesque interdum. Quisque porttitor nisl tellus, ac bibendum nunc rhoncus sed.");
+  const [title, setTitle] = useState(null);
+  const [body, setBody] = useState(null);
   const [articleData, setArticleData] = useState({
     title: "",
     body: "",
     author: {
       name: "",
-      _id: ""
+      _id: "",
     },
-    date: ""
+    date: "",
   });
   const id = useParams().id;
   const navigate = useNavigate();
@@ -49,7 +49,6 @@ const ArticleView = () => {
 
   }, []);
 
-
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -69,12 +68,20 @@ const ArticleView = () => {
     headers.append("Authorization", "Bearer " + localStorage.getItem("token"));
     headers.append("Content-Type", "application/json");
 
-    const payload = { title, body }
+    let payload = {};
+
+    if (title && body) {
+      payload = { title, body };
+    } else if (title) {
+      payload = { title };
+    } else if (body) {
+      payload = { body };
+    }
 
     fetch("http://localhost:8000/articles/" + id, {
       method: "PATCH",
       headers,
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
     })
       .then(res => {
         return res.json();
@@ -103,7 +110,7 @@ const ArticleView = () => {
 
     fetch("http://localhost:8000/articles/" + id, {
       method: "DELETE",
-      headers
+      headers,
     })
       .then(res => {
         return res.json();
@@ -202,10 +209,15 @@ const ArticleView = () => {
         }
       />
       <h2 className="article-title">{articleData.title}</h2>
-      <img src="./logo192.png" alt="blog_image" className="cover" />
+      <img src={`http://localhost:8000/articles/${id}/cover`} alt="blog_image" className="cover" />
 
-      <p className={isEditing ? "article-body-edit article-body" : "article-body"}>
-        {articleData.body}
+      <p
+        dangerouslySetInnerHTML={{ __html: articleData.body }}
+        className={
+          isEditing ? "article-body-edit article-body" : "article-body"
+        }
+      >
+        {/* { articleData.body } */}
       </p>
     </div>
   );

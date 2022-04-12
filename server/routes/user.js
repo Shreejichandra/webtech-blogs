@@ -1,6 +1,7 @@
 const express = require("express");
 const multer = require("multer");
 const sharp = require('sharp');
+
 const User = require("../models/user");
 const auth = require("../middleware/auth");
 
@@ -30,7 +31,6 @@ router.post("/users", async (req, res) => {
 
 // Upload/Update an avatar pic for a User
 router.post("/users/me/avatar", auth, upload.single('avatar'), async (req, res) => {
-    // req.file.buffer contains the binary data of the file being transferred (if the dest property is absent in the ipupload objec)
     const buffer = await sharp(req.file.buffer).resize({width: 250, height: 250}).png().toBuffer();
     req.user.avatar = buffer;
     await req.user.save();

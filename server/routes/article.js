@@ -1,8 +1,22 @@
 const express = require("express");
+const multer = require("multer");
+const sharp = require('sharp');
+
 const Article = require("../models/article");
 const User = require("../models/user");
-const router = new express.Router();
 const auth = require("../middleware/auth");
+
+const router = new express.Router();
+const upload = multer({
+    limits: {
+        fileSize: 1000000  // Roughly 1 MegaByte
+    },
+    fileFilter(res, file, cb)  {
+        if (!file.originalname.match(/\.(png|jpg|jpeg)$/))
+            return cb(new Error("Only Images Allowed!!"));
+        return cb(undefined, true);
+    }
+});
 
 // Create a new Article
 router.post("/articles", auth, async (req, res) => {
@@ -18,6 +32,37 @@ router.post("/articles", auth, async (req, res) => {
         res.status(400).send(err);
     }
 });
+
+// Upload/Update an cover pic for an Article
+router.post("/articles/:id/cover", auth, upload.single('cover'), async (req, res) => {
+    const buffer = await sharp(req.file.buffer).resize({width: 250, height: 250}).png().toBuffer();
+    const article = await Article.findOne({_id: req.params.id, author: req.user._id});
+    
+    if (!article)
+        return res.status(404);
+
+    article.cover = buffer;
+    await article.save();
+    res.send();
+
+}, (error, req, res, next) => {
+    res.status(400).send({ error: error.message });
+});
+
+// Fetch an Article's Cover
+router.get("/articles/:id/cover", async (req, res) => {
+    try {
+        const article = await Article.findById(req.params.id);
+
+        if (!article || !article.cover)
+            throw new Error();
+
+        res.set("Content-Type", "image/jpg");
+        res.send(article.cover);
+    } catch (e) {
+        res.status(404).send();
+    }
+})
 
 // List all the Articles of a user
 // GET /articles/?completed
@@ -106,7 +151,7 @@ router.get("/articles/:id", async (req, res) => {
         let article = await Article.findOne({ _id });
         const user = await User.find({ _id: article.author });
         article["author"] = user[0];
-        console.log(article);
+        // console.log(article);
 
         if (!article) res.status(404).send();
 

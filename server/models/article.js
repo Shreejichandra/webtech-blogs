@@ -12,7 +12,7 @@ const articleSchema = new mongoose.Schema(
             trim: true,
             required: true
         },
-        avatar: {
+        cover: {
             type: Buffer
         },
         author: {
