@@ -103,8 +103,8 @@ function Creator() {
       </h2>
 
       <label htmlFor="contained-button-file">
-        {/* <Input accept="image/*" id="contained-button-file" type="file" />
-        <Button
+        <Input accept="image/*" id="contained-button-file" type="file" />
+        {/* <Button
           variant="contained"
           component="span"
           style={{
@@ -124,9 +124,7 @@ function Creator() {
           />
 
           <div className="child">
-            <IconButton>
-              <Edit style={{ color: "white" }} />
-            </IconButton>
+            <Edit style={{ position: "relative", right: "120%", top: "5px", color: "white" }} />
           </div>
         </div>
       </label>
