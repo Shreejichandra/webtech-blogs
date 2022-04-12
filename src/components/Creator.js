@@ -8,23 +8,79 @@ import Edit from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
 
 function Creator() {
-  const [title, setTitle] = useState("Enter Title...");
-  const [text, setText] = useState("Enter Text...");
-  const [e1, setE1] = useState(null);
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
+  const [selectedCover, setSelectedCover] = useState(undefined);
+  const [preview, setPreview] = useState(undefined);
 
+  // Initialize the editors
   useEffect(() => {
     createEditor(".editable-title", "Title", setTitle, undefined);
-    setE1(createEditor(".editable", "Edit me", setTitle, ".editable"));
-    createEditor(".editable-text", "Body", setText, undefined);
+    createEditor(".editable-text", "Body", setBody, undefined);
   }, []);
 
-  const handleClick = () => {
-    console.log(e1.getContent(0));
-    e1.destroy();
+  // For Cover image preview
+  useEffect(() => {
+    if (!selectedCover) {
+      setPreview(undefined);
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(selectedCover);
+    setPreview(objectUrl);
+
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [selectedCover]);
+
+  const selectCoverImage = (e) => {
+    if (!e.target.files || e.target.files.length === 0) {
+      setSelectedCover(undefined);
+      return;
+    }
+
+    setSelectedCover(e.target.files[0]);
   };
 
-  const handleOpen = () => {
-    setE1(createEditor(".editable", "Edit me", setTitle, ".editable"));
+  const saveArticle = () => {
+    console.log(title);
+    console.log(body);
+
+    let headers = new Headers();
+    headers.append("Authorization", "Bearer " + localStorage.getItem("token"));
+    headers.append("Content-Type", "application/json");
+    const payload = { title, body };
+
+    fetch("http://localhost:8000/articles", {
+      method: "POST",
+      headers,
+      body: JSON.stringify(payload),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+
+        // Cover Upload
+        if (selectedCover) {
+          const formData = new FormData();
+          formData.append("cover", selectedCover);
+
+          let headers = new Headers();
+          headers.append(
+            "Authorization",
+            "Bearer " + localStorage.getItem("token")
+          );
+
+          fetch("http://localhost:8000/articles/" + data._id + "/cover", {
+            method: "POST",
+            headers,
+            body: formData,
+          }).then((res) => {
+            console.log(res.status);
+          });
+        }
+      });
   };
 
   const Input = styled("input")({
@@ -96,6 +152,7 @@ function Creator() {
           padding: "8px 36px",
           margin: "1% 45%",
         }}
+        onClick={saveArticle}
       >
         Save
       </Button>

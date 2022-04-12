@@ -11,7 +11,7 @@ import UserArticles from "./components/UserArticles";
 
 function App() {
   const [showSignIn, setShowSignIn] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");

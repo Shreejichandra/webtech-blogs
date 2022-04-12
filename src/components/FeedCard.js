@@ -23,38 +23,46 @@ const useStyles = makeStyles({
   },
 });
 
-// <Grid container spacing={2}>
-//   <Grid item xs={8}>
-//     <Item>xs=8</Item>
-//   </Grid>
-//   <Grid item xs={4}>
-//     <Item>xs=4</Item>
-//   </Grid>
-// </Grid>
+const htmlToText = (html) => {
+  let text = html;
+  text = text.replace(/\n/gi, "");
+  text = text.replace(/<style([\s\S]*?)<\/style>/gi, "");
+  text = text.replace(/<script([\s\S]*?)<\/script>/gi, "");
+  text = text.replace(/<a.*?href="(.*?)[\?\"].*?>(.*?)<\/a.*?>/gi, " $2 $1 ");
+  text = text.replace(/<\/div>/gi, "\n\n");
+  text = text.replace(/<\/li>/gi, "\n");
+  text = text.replace(/<li.*?>/gi, "  *  ");
+  text = text.replace(/<\/ul>/gi, "\n\n");
+  text = text.replace(/<\/p>/gi, "\n\n");
+  text = text.replace(/<br\s*[\/]?>/gi, "\n");
+  text = text.replace(/<[^>]+>/gi, "");
+  text = text.replace(/^\s*/gim, "");
+  text = text.replace(/ ,/gi, ",");
+  text = text.replace(/ +/gi, " ");
+  text = text.replace(/\n+/gi, "\n\n");
+  return text;
+};
+
 
 export default function FeedCard(props) {
   const classes = useStyles();
 
   return (
     <div className="feedcard">
-      {/* <Grid container justify="center"> */}
       <Card className={classes.root} style={{ backgroundColor: "#383838" }}>
-        <CardActionArea component={RouterLink} to={`/article/${props.id}`}>
-          <h2>{props.title}</h2>
+        <CardActionArea component={RouterLink} to={`/article/${props.article_id}`}>
+          <h2>{htmlToText(props.title)}</h2>
 
           <CardMedia
             component="img"
             height="194"
             // image="./card1.jpg"
-            image={require("./card1.jpg")}
+            image={`http://localhost:8000/articles/${props.article_id}/cover`}
             alt="Paella dish"
           />
 
           <CardContent>
-            {/* <Typography variant="body2" className="card-content"> */}
-            <p className="card-content"> {props.text}</p>
-
-            {/* </Typography> */}
+            <p className="card-content"> {htmlToText(props.text).substring(0, 200) + (props.text.length > 200 ? "..." : "")}</p>
           </CardContent>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <p
@@ -64,26 +72,19 @@ export default function FeedCard(props) {
                 fontSize: "12px",
               }}
             >
-              September 14, 2016
+              {props.date}
+              {/* September 14, 2016 */}
             </p>
             <CardHeader
               className="card-header"
               avatar={
-                <Avatar alt="Emy Sharp" src={require("./my_picture.jpg")} />
+                <Avatar alt={props.author} src={`http://localhost:8000/users/${props.authorId}/avatar`} />
               }
-              title="Shreeji Chandra"
-              // subheader="September 14, 2016"
-              //   subheader={
-              //     <Typography sx={{ color: "rgb(255, 46, 227)" }}>
-              //       September 14, 2016
-              //     </Typography>
-              //   }
-              // action={<FavoriteIcon />}
+              title={props.author}
             />
           </div>
         </CardActionArea>
       </Card>
-      {/* </Grid> */}
     </div>
   );
 }

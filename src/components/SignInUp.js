@@ -30,6 +30,7 @@ function SignIn({ handleClose, setIsLoggedIn }) {
       .then((data) => {
         console.log(data);
         localStorage.setItem("token", data.token);
+        localStorage.setItem("user_id", data.user._id);
         setIsLoggedIn(true);
         handleClose();
       });
@@ -77,8 +78,10 @@ function SignUp({ handleClose, setIsLoggedIn }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const signUp = () => {
+    // Normal User Data
     const payload = {
       name,
       email,
@@ -94,11 +97,32 @@ function SignUp({ handleClose, setIsLoggedIn }) {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         localStorage.setItem("token", data.token);
-        setIsLoggedIn(true);
-        handleClose();
+
+        // Avatar Upload
+        if (selectedFile) {
+          const formData = new FormData();
+          formData.append("avatar", selectedFile);
+
+          let headers = new Headers();
+          headers.append("Authorization", "Bearer " + data.token);
+
+          fetch("http://localhost:8000/users/me/avatar", {
+            method: "POST",
+            headers,
+            body: formData,
+          }).then((res) => {
+            console.log(res.status);
+            setIsLoggedIn(true);
+            handleClose();
+          });
+        }
       });
+  };
+
+  const handleFileSelect = (e) => {
+    setSelectedFile(e.target.files[0]);
   };
 
   return (
@@ -137,7 +161,12 @@ function SignUp({ handleClose, setIsLoggedIn }) {
           onChange={(e) => setPassword(e.target.value)}
         />
         <label className="modal-avatar">Avatar: </label>
-        <input type="file" id="avatar" name="avatar" />
+        <input
+          type="file"
+          id="avatar"
+          name="avatar"
+          onChange={handleFileSelect}
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} className="modal-button">
